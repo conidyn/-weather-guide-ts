@@ -1,12 +1,16 @@
 interface InputProps {
-    value: string | undefined;
+    value: string;
     handleChange: (value: string) => void;
+    handleSubmit: () => void
 }
 
-export const Input = ({value, handleChange}: InputProps) => {
+export const Input = ({value, handleChange, handleSubmit}: InputProps) => {
 
     return (
-        <input onChange={(e) => handleChange(e.target.value)} value={value} />
+        <div>
+            <input onChange={(e) => handleChange(e.target.value)} value={value} />
+            <button onClick={handleSubmit}>Search</button>
+        </div>
     )
 
 }
