@@ -18,5 +18,5 @@ export const WeatherApi = {
             console.error(e)
         }
     },
-    getDailyWeather: async (lat: string, lon: string) => {}
+//     getDailyWeather: async (lat: string, lon: string) => {}
 }
