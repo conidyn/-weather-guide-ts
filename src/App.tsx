@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { WeatherApi } from "./API/WeatherApi";
 import { Input } from "./components/Input";
-
+import { WHEATER_URL } from "./API/WeatherApi";
+import { GEO_URL } from "./API/WeatherApi";
 type Coordinate = { lat: string | null, lon: string | null };
 
-interface Weather {
+export interface Weather {
   cityName: string;
   temp: number;
   feelsLike: number;
@@ -27,14 +28,16 @@ export const App = () => {
   useEffect(() => {
     if (coordinate.lat && coordinate.lon) {
       WeatherApi.getCurrentWeather(coordinate.lat, coordinate.lon).then((data) => {
-        console.log(data)
-        // Logique à faire pour formater l'objet data et le transformer en objet Weather
-        // Logique ...
-        // setCurrentWeather({OBJET_FORMATÉ})
+      const weatherFormatted: Weather = {
+        temp: Math.trunc(data.main.temp),
+        feelsLike: Math.trunc(data.main.feels_like),
+        cityName: data.name,
+        state: data.weather[0].main
+      }
+        setCurrentWeather(weatherFormatted)
       })
     }
   }, [coordinate])
-
 
   return (
     <>
