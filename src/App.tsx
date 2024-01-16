@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { WeatherApi } from "./API/WeatherApi";
 import { Input } from "./components/Input";
-import { WHEATER_URL } from "./API/WeatherApi";
-import { GEO_URL } from "./API/WeatherApi";
+import { WeatherCard } from "./components/WeatherCard";
+
 type Coordinate = { lat: string | null, lon: string | null };
 
 export interface Weather {
@@ -10,6 +10,7 @@ export interface Weather {
   temp: number;
   feelsLike: number;
   state: string;
+  id: number,
 }
 
 export const App = () => {
@@ -21,30 +22,44 @@ export const App = () => {
 
   const handleSubmit = () => {
     WeatherApi.getLatLonByCityName(cityInput).then(([{ lat, lon }]) => {
+      console.log("LOG", {cityInput, lat, lon})
       setCoordinate({ lat, lon })
     })
   };
 
-  useEffect(() => {
-    if (coordinate.lat && coordinate.lon) {
-      WeatherApi.getCurrentWeather(coordinate.lat, coordinate.lon).then((data) => {
+// pour destucturer objet style data plus bas faire (({})) et mettre les proprieter destructurer seulement (({main, weather, name}))
+useEffect(() => {
+  if (coordinate.lat && coordinate.lon) {
+    WeatherApi.getCurrentWeather(coordinate.lat, coordinate.lon).then((data) => {
       const weatherFormatted: Weather = {
         temp: Math.trunc(data.main.temp),
         feelsLike: Math.trunc(data.main.feels_like),
         cityName: data.name,
-        state: data.weather[0].main
+        state: data.weather[0].main,
+        id: data.id,
       }
-        setCurrentWeather(weatherFormatted)
-      })
-    }
-  }, [coordinate])
+      
+      setCurrentWeather(weatherFormatted)      
+    })
+  }
+}, [coordinate])
+
+const deleteCity = () => {
+  setCurrentWeather(null);
+  setCoordinate({ lat: null, lon: null });
+}
 
   return (
     <>
       <h1>Weather App</h1>
       <div>
-        <Input value={cityInput} handleChange={handleChangeInput} handleSubmit={handleSubmit} />
-      </div>
+        <Input value={cityInput} handleChange={handleChangeInput} handleSubmit={handleSubmit}  />
+
+      {currentWeather && <WeatherCard currentWeather={currentWeather}  deleteCity={deleteCity} />}
+       </div>
+       
+       
+      
     </>
 
   )
