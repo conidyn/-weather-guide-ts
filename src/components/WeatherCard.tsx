@@ -1,4 +1,4 @@
-import { Weather } from "../App"
+import { Weather } from "../types"
 
 export interface WeatherCardProps {
     currentWeather: Weather;
