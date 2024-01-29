@@ -1,6 +1,7 @@
 const API_KEY: string = "227227b0bd1b50ea9ffa6e7be4016965";
 export const WHEATER_URL: string = "https://api.openweathermap.org/data/2.5/weather";
-export const GEO_URL: string  = "http://api.openweathermap.org/geo/1.0/direct";
+export const GEO_URL: string = "http://api.openweathermap.org/geo/1.0/direct";
+export const WEATHER_FORECAST_URL: string = "https://api.openweathermap.org/data/2.5/forecast";
 
 export const WeatherApi = {
     getCurrentWeather: async (lat: string, lon: string) => {
@@ -9,7 +10,7 @@ export const WeatherApi = {
         currentWeatherUrl.searchParams.append('lon', lon);
         currentWeatherUrl.searchParams.append('units', "metric");
         currentWeatherUrl.searchParams.append('appid', API_KEY);
-        
+
         try {
             const res = await fetch(currentWeatherUrl);
             const currentWeather = await res.json();
@@ -27,10 +28,25 @@ export const WeatherApi = {
             const res = await fetch(geoUrl);
             const cityData = await res.json()
             return cityData;
-            
+
         } catch (e) {
-           console.error(e);
-        } 
-    }
-//    getDailyWeather: async (lat: string, lon: string) => {}
+            console.error(e);
+        }
+    },
+    getDailyWeather: async (lat: string, lon: string) => {
+        const dailyWeatherUrl: URL = new URL(WEATHER_FORECAST_URL);
+        dailyWeatherUrl.searchParams.append('lat', lat);
+        dailyWeatherUrl.searchParams.append('lon', lon);
+        dailyWeatherUrl.searchParams.append('units', "metric");
+        dailyWeatherUrl.searchParams.append('appid', API_KEY);
+
+        try {
+            const res = await fetch(dailyWeatherUrl);
+            const dailyWeather = await res.json();
+            return dailyWeather;
+        } catch (e) {
+            console.error(e)
+        }
+    },
+
 }

@@ -1,7 +1,7 @@
-import { Weather } from "../types"
+import { CurrentWeather } from "../types"
 
 export interface WeatherCardProps {
-    currentWeather: Weather;
+    currentWeather: CurrentWeather;
     deleteCity: () => void;
 }
 
