@@ -9,7 +9,7 @@ export const App = () => {
   const [cityInput, setCityInput] = useState<string>("");
   const [coordinate, setCoordinate] = useState<Coordinate>({ lat: null, lon: null });
   const [currentWeather, setCurrentWeather] = useState<CurrentWeather | null>(null);
-  const [dailyWeather, setDailyWeather] = useState<any>([])
+  const [dailyWeather, setDailyWeather] = useState<any>(null)
 
   const handleChangeInput = (value: string) => setCityInput(value);
 
@@ -44,8 +44,15 @@ export const App = () => {
       })
 
       WeatherApi.getDailyWeather(coordinate.lat, coordinate.lon).then(({ list }) => {
-        const mercredi = [];
-        const jeudi = []
+        const week = {
+          sunday: [],
+          monday: [],
+          tuesday: [],
+          wednesday: [],
+          thursday: [],
+          friday: [],
+          saturday: [],
+        }
         list.forEach((item) => {
           // LOGIQUE POUR FILTRER PAR JOUR
 
@@ -64,39 +71,38 @@ export const App = () => {
           }
           // on utilise le set dailyWeather afin de mettre les element result dans un tableau ci dessous
           switch (currentDay) {
-            case 0: {
-              return result;
+            case 0:
+              week.sunday.push(result)
               break;
-            }
             case 1:
+              week.monday.push(result)
               break;
             case 2:
+              week.tuesday.push(result)
               break;
-            case 3: {
-              mercredi.push(result)
+            case 3:
+              week.wednesday.push(result)
               break;
-            }
             case 4:
-              jeudi.push(result)
+              week.thursday.push(result)
               break;
             case 5:
-
+              week.friday.push(result)
               break;
             case 6:
-
+              week.saturday.push(result)
               break;
-
             default:
               break;
           }
-          // console.log(result);
         })
-        setDailyWeather([mercredi, jeudi])
+        // next step : formater week pour n'avoir qu'un seul objet au lieu d'un array pour une journée
+        setDailyWeather(week)
       })
     }
   }, [coordinate])
 
-  if (dailyWeather.length > 0) console.log(dailyWeather);
+  if (dailyWeather) console.log(dailyWeather);
   return (
     <>
       <h1>Weather App</h1>
