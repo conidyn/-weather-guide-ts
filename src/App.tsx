@@ -96,13 +96,23 @@ export const App = () => {
               break;
           }
         })
-        // next step : formater week pour n'avoir qu'un seul objet au lieu d'un array pour une journée
+        for (const [key, value] of Object.entries(week)) {
+          if (value.length > 0 ) {
+            let temp_average = 0;
+            const newObj = value.reduce((acc, current) => {
+              temp_average += current.temp
+              if (current.temp_min < acc.temp_min) acc = {...acc, temp_min: current.temp_min}
+              if (current.temp_max > acc.temp_max) acc = {...acc, temp_max: current.temp_max}
+              return acc
+            })
+            week[key] = {...newObj, temp_average: Math.round(temp_average / value.length)};
+          }
+        }
         setDailyWeather(week)
       })
     }
   }, [coordinate])
 
-  if (dailyWeather) console.log(dailyWeather);
   return (
     <>
       <h1>Weather App</h1>
