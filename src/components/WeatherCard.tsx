@@ -1,8 +1,9 @@
-import { CurrentWeather } from "../types"
+import { CurrentWeather } from "../types/weatherType"
 
 export interface WeatherCardProps {
     currentWeather: CurrentWeather;
     deleteCity: () => void;
+    // dailyWeather: DailyWeather | Record<string, never>;
 }
 
 export const WeatherCard = ({ currentWeather, deleteCity }: WeatherCardProps) => {
@@ -17,5 +18,6 @@ export const WeatherCard = ({ currentWeather, deleteCity }: WeatherCardProps) =>
             </ul>
             <button id={`remove${currentWeather.cityName}`} className='delete-btn' onClick={deleteCity}>x</button>
         </div>
+
     )
 }
