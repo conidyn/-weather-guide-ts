@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Input } from "./components/Input";
 import { WeatherCard } from "./components/WeatherCard";
+import { DailyWeatherCard } from "./components/DailyWeatherCard";
 import { WeatherApi } from "./API/WeatherApi";
 import { DailyWeather, CurrentWeather, Day, Days, Coordinate } from "./types/weatherType";
 import { RawWeatherList } from "./types/rawWeatherType";
@@ -126,16 +127,16 @@ export const App = () => {
 
             // @ts-expect-error: Object is possibly 'null'
             formattedObject[key] = { ...newObj, temp_average: Math.round(temp_average / value.length) };
+            // console.log(key);
           }
         }
 
         setDailyWeather(formattedObject)
         // console.log(JSON.stringify(week));
-        // console.log(dailyWeather);
       })
     }
   }, [coordinate])
-  console.log(dailyWeather);
+  // console.log(dailyWeather);
   return (
     <>
       <h1>Weather App</h1>
@@ -145,9 +146,9 @@ export const App = () => {
         {Object.keys(dailyWeather).length > 0 && (
           <>
             {Object.entries(dailyWeather).map(([key, value]) => (
-              <div key={value.id}>
-                <p>{key}</p>
-                <p>{JSON.stringify(value)}</p>
+              <div>
+                <h1>{key}</h1>
+                  <DailyWeatherCard key={key} dailyWeather={dailyWeather} value={value} />
               </div>
             ))}
           </>
